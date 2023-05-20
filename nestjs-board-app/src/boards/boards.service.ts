@@ -26,30 +26,22 @@ export class BoardsService {
   }
 
   getBoardById(id: string): Board {
-    const board = this.boards.find((board) => board.id === id);
+    const boardFound = this.boards.find((board) => board.id === id);
     // 404 에러 처리
-    if (!board) {
+    if (!boardFound) {
       throw new NotFoundException(`Can't find Board with id ${id}`);
     }
-    return board;
+    return boardFound;
   }
 
   deleteBoardById(id: string): void {
-    const board = this.getBoardById(id);
-    // 404 에러 처리
-    if (!board) {
-      throw new NotFoundException(`Can't find Board with id ${id}`);
-    }
-    this.boards = this.boards.filter((board) => board.id !== board.id);
+    const boardFound = this.getBoardById(id);
+    this.boards = this.boards.filter((board) => board.id !== boardFound.id);
   }
 
   updateBoardStatus(id: string, status: BoardStatus): Board {
-    const board = this.getBoardById(id);
-    // 404 에러 처리
-    if (!board) {
-      throw new NotFoundException(`Can't find Board with id ${id}`);
-    }
-    board.status = status;
-    return board;
+    const boardFound = this.getBoardById(id);
+    boardFound.status = status;
+    return boardFound;
   }
 }
