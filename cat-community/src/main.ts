@@ -4,9 +4,11 @@ import { HttpExceptionFilter } from './commons/exceptions/http-exception.filter'
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import * as expressBasicAuth from 'express-basic-auth';
+import * as path from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule); // NestExpressApplication: express를 사용하기 위해 NestApplication을 확장한 것
   app.useGlobalPipes(new ValidationPipe()); // global pipe (class validation)
   app.useGlobalFilters(new HttpExceptionFilter()); // global filter
 
@@ -28,6 +30,11 @@ async function bootstrap() {
     .build();
   const document: OpenAPIObject = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
+
+  // static files
+  app.useStaticAssets(path.join(__dirname, './common', 'uploads'), {
+    prefix: '/static',
+  });
 
   // cors
   app.enableCors({

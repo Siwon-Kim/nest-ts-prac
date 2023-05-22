@@ -5,9 +5,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Cat, CatSchema } from './cats.schema';
 import { CatsRepository } from './cats.repository';
 import { AuthModule } from 'src/auth/auth.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
+    MulterModule.register({
+      dest: './uploads',
+    }),
     MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
     forwardRef(() => AuthModule), // AuthModule과 CatsModule 두 군데에서 서로를 import하고 있기 때문에 forwardRef()를 사용하여 순환 참조를 방지
   ],

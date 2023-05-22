@@ -40,4 +40,15 @@ export class CatsRepository {
       throw new HttpException('DB Error', 500);
     }
   }
+
+  async findByIdAndUpdateImg(catId: string, fileName: string) {
+    try {
+      const cat = await this.catModel.findById(catId);
+      cat.imgUrl = `http://localhost:8000/static/${fileName}`;
+      const newCat = await cat.save();
+      return newCat.readOnlyData;
+    } catch (error) {
+      throw new HttpException('DB Error', 500);
+    }
+  }
 }
