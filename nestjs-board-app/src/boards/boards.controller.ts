@@ -19,10 +19,13 @@ import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe'
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
 import { Users } from '../auth/users.entity';
+import { Logger } from '@nestjs/common';
+import { create } from 'domain';
 
 @Controller('boards')
 @UseGuards(AuthGuard()) // auth-middleware 역할
 export class BoardsController {
+  private logger = new Logger('BoardsController');
   constructor(private boardsService: BoardsService) {}
 
   @Get('/')
@@ -32,6 +35,7 @@ export class BoardsController {
 
   @Get('/my')
   getAllMyBoards(@GetUser() user: Users): Promise<Board[]> {
+    this.logger.verbose(`User ${user.username} trying to get all boards`);
     return this.boardsService.getAllMyBoards(user);
   }
 
@@ -41,6 +45,13 @@ export class BoardsController {
     @Body() createBoardDto: CreateBoardDto,
     @GetUser() user: Users,
   ): Promise<Board> {
+    this.logger.verbose(
+      `User ${
+        user.username
+      } trying to create a new board. Payload: ${JSON.stringify(
+        createBoardDto,
+      )}`,
+    );
     return this.boardsService.createBoard(createBoardDto, user);
   }
 
