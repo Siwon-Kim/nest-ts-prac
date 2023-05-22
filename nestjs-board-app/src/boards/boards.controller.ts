@@ -9,14 +9,19 @@ import {
   UsePipes,
   ValidationPipe,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardStatus } from './boards-status.enum';
 import { Board } from './boards.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from '../auth/get-user.decorator';
+import { Users } from '../auth/users.entity';
 
 @Controller('boards')
+@UseGuards(AuthGuard()) // auth-middleware 역할
 export class BoardsController {
   constructor(private boardsService: BoardsService) {}
 
@@ -27,8 +32,11 @@ export class BoardsController {
 
   @Post('/')
   @UsePipes(ValidationPipe)
-  createBoard(@Body() createBoardDto: CreateBoardDto): Promise<Board> {
-    return this.boardsService.createBoard(createBoardDto);
+  createBoard(
+    @Body() createBoardDto: CreateBoardDto,
+    @GetUser() user: Users,
+  ): Promise<Board> {
+    return this.boardsService.createBoard(createBoardDto, user);
   }
 
   @Get('/:id')

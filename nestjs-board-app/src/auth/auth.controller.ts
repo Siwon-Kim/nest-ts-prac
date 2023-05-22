@@ -22,7 +22,7 @@ export class AuthController {
   }
 
   @Post('/test')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard()) // auth-middleware 역할
   test(@GetUser() user: Users) {
     console.log('user', user);
   }
