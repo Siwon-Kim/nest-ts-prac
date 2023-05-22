@@ -36,3 +36,11 @@ export class Cat extends Document {
 }
 
 export const CatSchema = SchemaFactory.createForClass(Cat);
+
+CatSchema.virtual('readOnlyData').get(function (this: Cat) {
+  return {
+    id: this.id,
+    email: this.email,
+    name: this.name,
+  };
+}); // virtual property를 만들어줌: client에게 보여줄 데이터만 따로 만들어줌
