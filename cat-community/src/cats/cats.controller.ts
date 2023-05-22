@@ -23,12 +23,27 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Get()
-  getAllCats() {
-    throw new HttpException('get api broken', 401);
+  getCurrentCat() {
+    return 'current cat';
   }
 
-  @Get('/:id')
-  getOneCat(@Param('id', ParseIntPipe, PositiveIntPipe) param: number) {
-    return 'get one cat';
+  @Post()
+  async signUp() {
+    return 'sign up';
+  }
+
+  @Post('login')
+  logIn() {
+    return 'log in';
+  }
+
+  @Post('logout')
+  logOut() {
+    return 'log out';
+  }
+
+  @Post('upload/cats')
+  uploadCatImg() {
+    return 'upload cat img';
   }
 }
