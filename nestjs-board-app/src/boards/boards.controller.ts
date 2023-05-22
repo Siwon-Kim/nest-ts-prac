@@ -20,7 +20,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
 import { Users } from '../auth/users.entity';
 import { Logger } from '@nestjs/common';
-import { create } from 'domain';
 
 @Controller('boards')
 @UseGuards(AuthGuard()) // auth-middleware 역할
