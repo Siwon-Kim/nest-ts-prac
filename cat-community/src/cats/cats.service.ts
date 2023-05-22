@@ -22,6 +22,6 @@ export class CatsService {
       name,
       password: hashedPassword,
     });
-    return cat;
+    return cat.readOnlyData; // virtual로 정의된 field만 return
   }
 }
