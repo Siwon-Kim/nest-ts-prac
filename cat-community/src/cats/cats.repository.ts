@@ -51,4 +51,12 @@ export class CatsRepository {
       throw new HttpException('DB Error', 500);
     }
   }
+
+  async findAll() {
+    try {
+      return await this.catModel.find();
+    } catch (error) {
+      throw new HttpException('DB Error', 500);
+    }
+  }
 }

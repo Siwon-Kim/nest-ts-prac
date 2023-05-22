@@ -39,12 +39,18 @@ export class CatsController {
     private readonly authService: AuthService,
   ) {}
 
-  @ApiOperation({ summary: '로그인된 고양이 정보' })
+  @ApiOperation({ summary: '현재 고양이 정보' })
   @UseGuards(JwtAuthGuard) // auth-middleware 대체
   @Get()
   // @Req req: Request 사용하지 않고 더 추상화시킴 (@CurrentUser에서 req.user를 가져옴)
   getCurrentCat(@CurrentUser() cat: Cat) {
     return cat.readOnlyData;
+  }
+
+  @ApiOperation({ summary: '모든 고양이 정보 조회' })
+  @Get('all')
+  getAllCats() {
+    return this.catsService.getAllCats();
   }
 
   @ApiResponse({
