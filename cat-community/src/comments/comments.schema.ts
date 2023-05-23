@@ -37,10 +37,8 @@ export class Comments extends Document {
     description: '좋아요 수',
   })
   @Prop({
-    required: true,
     default: 0,
   })
-  @IsNotEmpty()
   @IsPositive()
   likeCount: number;
 

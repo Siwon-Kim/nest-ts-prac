@@ -3,10 +3,27 @@ import { Cat } from './cats.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { HttpException, Injectable } from '@nestjs/common';
 import { CatRequestDto } from './dto/cats.request.dto';
+import { CommentsSchema, Comments } from 'src/comments/comments.schema';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class CatsRepository {
-  constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) {}
+  constructor(
+    @InjectModel(Cat.name) private readonly catModel: Model<Cat>,
+    @InjectModel(Comments.name) private readonly commentsModel: Model<Comments>,
+  ) {}
+
+  async findAll() {
+    try {
+      const result = await this.catModel
+        .find()
+        .populate({ path: 'comments', model: this.commentsModel }); // foreign key에 해당하는 virtual field인 commentsList를 populate
+      console.log('result', result);
+      return result;
+    } catch (error) {
+      throw new HttpException('DB Error', 500);
+    }
+  }
 
   async checkExistingEmail(email: string): Promise<boolean> {
     try {
@@ -49,14 +66,6 @@ export class CatsRepository {
       cat.imgUrl = `http://localhost:8000/static/${fileName}`;
       const newCat = await cat.save();
       return newCat.readOnlyData;
-    } catch (error) {
-      throw new HttpException('DB Error', 500);
-    }
-  }
-
-  async findAll() {
-    try {
-      return await this.catModel.find();
     } catch (error) {
       throw new HttpException('DB Error', 500);
     }
