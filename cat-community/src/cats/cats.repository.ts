@@ -3,8 +3,7 @@ import { Cat } from './cats.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { HttpException, Injectable } from '@nestjs/common';
 import { CatRequestDto } from './dto/cats.request.dto';
-import { CommentsSchema, Comments } from 'src/comments/comments.schema';
-import * as mongoose from 'mongoose';
+import { Comments } from 'src/comments/comments.schema';
 
 @Injectable()
 export class CatsRepository {
