@@ -2,16 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BoardStatus } from './boards-status.enum';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardsRepository } from './boards.repository';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './boards.entity';
 import { Users } from '../auth/users.entity';
 
 @Injectable()
 export class BoardsService {
-  constructor(
-    @InjectRepository(BoardsRepository)
-    private boardsRepository: BoardsRepository,
-  ) {}
+  constructor(private boardsRepository: BoardsRepository) {}
 
   async getAllBoards(): Promise<Board[]> {
     return this.boardsRepository.find();
