@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Users } from './users.entity';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import {
@@ -6,8 +6,9 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { CustomRepository } from 'src/commons/typeorm-ex.decorator';
 
-@EntityRepository(Users)
+@CustomRepository(Users)
 export class UsersRepository extends Repository<Users> {
   async signUp(authCredentialDto: AuthCredentialDto): Promise<void> {
     const { username, password } = authCredentialDto;

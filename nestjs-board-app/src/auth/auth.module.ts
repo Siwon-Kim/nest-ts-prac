@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UsersRepository } from './users.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
 import * as config from 'config';
+import { Users } from './users.entity';
+import { TypeOrmExModule } from '../commons/typeorm-ex.module';
+import { UsersRepository } from './users.repository';
 
 const jwtConfig = config.get('jwt');
 
@@ -19,7 +21,8 @@ const jwtConfig = config.get('jwt');
         expiresIn: jwtConfig.expiresIn,
       },
     }),
-    TypeOrmModule.forFeature([UsersRepository]),
+    TypeOrmModule.forFeature([Users]),
+    TypeOrmExModule.forCustomRepository([UsersRepository]),
   ],
   controllers: [AuthController],
   providers: [JwtStrategy, AuthService],
